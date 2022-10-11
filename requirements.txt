@@ -1,0 +1,11 @@
+nltk==3.6.1
+emoji==1.7
+pandas
+numpy
+sklearn
+wordcloud
+regex==2022.7.25
+unidecode
+requests
+python-dotenv
+Flask-Mail
