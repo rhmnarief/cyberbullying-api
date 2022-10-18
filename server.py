@@ -1,8 +1,8 @@
-#Project Flask MVC
+# Project Flask MVC
 
-__author__ = "indhifarhandika"
+__author__ = "Muhammad Arief"
 __version__ = "1"
-__email__ = "indhifarhandika@gmail.com"
+__email__ = "rhmnarief8@gmail.com"
 
 from project import app
 

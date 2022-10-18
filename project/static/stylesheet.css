@@ -1,0 +1,121 @@
+*{
+    font-family: 'Montserrat', sans-serif;
+}
+p{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 140.62%;
+}
+h1{
+    font-weight: 300;
+    font-size: 48px;
+    line-height: 90%;
+}
+h2{
+    font-style: normal;
+    font-weight: 200;
+    font-size: 34px;
+    line-height: 140.62%;
+}
+.highlight{
+    background: linear-gradient(90deg, #8E29B3 -2.32%, #B3791D 118.11%);
+    color: #fff;
+    font-weight: bold;
+    padding: 3px 7px;
+}
+.btn-gradient{
+    background: linear-gradient(90deg, #8E29B3 -2.32%, #B3791D 118.11%);
+    padding: 6px 12px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none !important;
+}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 600px) {
+    .error-section{
+        text-align: center;
+    }
+}
+@media only screen and (min-width: 998px) {
+    .hero1-wrapper{
+        position: absolute;
+        left: 19.6%;
+        top: 34%;
+    }
+    .hero2-wrapper{
+        position: absolute;
+        left: 62.97%;
+        top: 42.35%;
+    }
+}
+@media only screen and (min-width: 1000px) {
+    .hero1-wrapper{
+        position: absolute;
+        left: 19.6%;
+        top: 8%;
+    }
+    .text-wrapper{
+        padding: 0 300px;
+    }
+    .hero2-wrapper{
+        position: absolute;
+        left: 62.97%;
+        top: 42.35%;
+    }
+}
+
+.card-input{
+    border-radius: 10px;
+    border-top: 5px solid  #914383 ;
+    border-bottom:5px solid #AD6F31;
+    background-image: 
+    linear-gradient(180deg, #914383 0%, #AD6F31 100%),
+    linear-gradient(180deg, #914383 0%, #AD6F31 100%);
+    background-size:5px 100%;
+    background-position:0 0, 100% 0;
+    background-repeat:no-repeat;
+}
+
+/* Rate Input */
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+    
+}
+.rate:not(:checked) > input {
+     position:absolute !important;
+   left: -9999px !important;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+ul li {
+    list-style: none;
+}

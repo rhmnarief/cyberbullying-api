@@ -9,3 +9,4 @@ unidecode
 requests
 python-dotenv
 Flask-Mail
+pymongo

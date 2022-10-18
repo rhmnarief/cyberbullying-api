@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+<section class="guide-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-wrapper text-center">
+          <h1>
+            <strong
+              >How to use
+              <br />
+              Cyberbullying API?</strong
+            >
+          </h1>
+          <div class="hero2-wrapper">
+            <img
+              src="{{url_for('static', filename = 'assets/hero2-image.png')}}"
+              alt="hero-image"
+              width="250px"
+            />
+          </div>
+          <p class="p-2">
+            As an application developer, you can use public APIs to detect
+            cyberbullying on
+            <span class="highlight">text-based data and documents</span> by
+            inserting this API before users leave comments on the forum.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 130px">
+      <div class="col-12 text-wrapper">
+        <h1 class="p-2">
+          <strong>Guide</strong>
+        </h1>
+        {% for guide in data_guide %}
+          <div class="guide p-2">
+            <h5 style="font-weight: bold ;">{{ guide.title }}</h5>
+            <p>
+            {{ guide.description }}
+            </p>
+          </div>
+        {% endfor %}
+
+        {{ data_url }}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,7 +1,8 @@
 # Flask Simple MVC
 
 <p align="center"><img src="https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/flask.3aee85149243.png&w=1500&sig=a934eafd41fe3681da59d952bbe5673df9c5597e"></p>
-## Pumpkin
+
+## Flask
 
 Flask is a micro web application framework written in the Python programming language and based on the Werkzeug toolkit and the Jinja2 template engine. BSD Licensed.
 
@@ -20,4 +21,4 @@ Python is a multipurpose interpretive programming language with a design philoso
 ## Contact
 
 - Instagram : [rhmnarief]_(https://www.instagram.com/rhmnarief_)
-- Linkedin : [r](https://www.linkedin.com/in/rhmnarief/)
+- Linkedin : [rhmnarief](https://www.linkedin.com/in/rhmnarief/)
