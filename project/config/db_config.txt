@@ -1,0 +1,9 @@
+change your database configuration
+{
+    "db": {
+            "url" : "",
+            "name" : "",
+            "user" :"",
+            "password" :""
+    }
+}

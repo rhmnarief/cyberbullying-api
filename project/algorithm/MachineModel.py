@@ -14,15 +14,6 @@ import numpy as np
 import os
 
 try:
-    cwd_loct = os.getcwd()
-    print('my location', cwd_loct)
-except Exception as ex:
-    print(cwd_loct)
-    print('*********')
-    print('Failed to read dataset')
-    print(ex)
-
-try:
     model = pickle.load(open("./project/share/model.pkl", "rb"))
     print('SUCCESS TO LOAD MODEL')
 except Exception as ex:

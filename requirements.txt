@@ -10,3 +10,5 @@ requests
 python-dotenv
 Flask-Mail
 pymongo
+flask_cors
+dnspython

@@ -108,3 +108,6 @@ venv.bak/
 
 # conditonal machine learning
 model.pkl
+
+# db_comf
+db_config.json

@@ -16,13 +16,6 @@ import pandas as pd
 import json
 import requests
 from dotenv import load_dotenv
-import os
-"""
-    Import MOdels
-from project.models.Hello import Hello
-"""
-# route index
-
 
 load_dotenv()
 
@@ -53,7 +46,7 @@ def page_not_found(e):
 @app.route('/', methods=['GET'])
 def homepage():
     try:
-        url = request.host_url + "comments"
+        url = request.host_url + "comment"
         get_comment = requests.get(url)
         response_json = get_comment.json()
         return render_template(
@@ -177,172 +170,7 @@ def check_cyberbullying():
             mimetype="application/json",
         )
 
-#########
-# CRUD Section
 
 
-@app.route("/comments", methods=["POST", "GET"])
-def manage_comment():
-    if request.method == "GET":
-        def get_comment():
-            try:
-                data = list(db.comments.find())
-                for comment in data:
-                    comment["_id"] = str(comment["_id"])
-                return Response(
-                    response=json.dumps(
-                        data, indent=4, sort_keys=True, default=str),
-                    status=200,
-                    mimetype="application/json",
-                )
-            except Exception as ex:
-                print(ex)
-                return Response(
-                    response=json.dumps(
-                        {"message": "cannot get comments data", }),
-                    status=500,
-                    mimetype="application/json",
-                )
-        return get_comment()
-    if request.method == "POST":
-        def send_comment():
-            try:
-                comment = {
-                    "fullname": request.form["fullname"],
-                    "email": request.form["email"],
-                    "comment": request.form["comment"],
-                    "rate": request.form["rate"],
-                    "timestamp": datetime.now(),
-                }
-                dbResponse = db.comments.insert_one(comment)
-
-                send_response = Response(
-                    response=json.dumps(
-                        {"message": "comment sent",
-                         "id": f"{dbResponse.inserted_id}"
-                         }
-                    ),
-                    status=200,
-                    mimetype="application/json",
-                )
-
-                return redirect(url_for('homepage'))
-            except Exception as ex:
-                return Response(
-                    response=json.dumps(
-                        {"message": "cannot send comment data", "error": f"{ex}"}),
-                    status=500,
-                    mimetype="application/json",
-                )
-        return send_comment()
-
-
-# @app.route("/users/<id>", methods=["PATCH"])
-# def update_user(id):
-#     try:
-#         dbResponse = db.users.update_one(
-#             {"_id": ObjectId(id)},
-#             {"$set": {"name": request.form["name"]}}
-#         )
-
-#         if dbResponse.modified_count == 1:
-#             return Response(
-#                 response=json.dumps(
-#                     {"message": "user updated!", }
-#                 ),
-#                 status=200,
-#                 mimetype="application/json",
-#             )
-#         else:
-#             return Response(
-#                 response=json.dumps(
-#                     {"message": "nothing updated!", }
-#                 ),
-#                 status=200,
-#                 mimetype="application/json",
-#             )
-
-#     except Exception as ex:
-#         print("*************")
-#         print(ex)
-#         print("*************")
-#         return Response(
-#             response=json.dumps(
-#                 {"message": "sorry cannot update user", }
-#             ),
-#             status=500,
-#             mimetype="application/json",
-#         )
-# #########
-
-
-# @app.route("/users/<id>", methods=["DELETE"])
-# def delete_user(id):
-#     try:
-#         dbResponse = db.users.delete_one({"_id": ObjectId(id)})
-#         if dbResponse.deleted_count == 1:
-#             return Response(
-#                 response=json.dumps(
-#                     {
-#                         "message": "success deleted data user!",
-#                         "id": f"{id}"
-#                     }
-#                 ),
-#                 status=200,
-#                 mimetype="application/json",
-#             )
-#         else:
-#             return Response(
-#                 response=json.dumps(
-#                     {
-#                         "message": "user not found!",
-#                     }
-#                 ),
-#                 status=200,
-#                 mimetype="application/json",
-#             )
-#     except Exception as ex:
-#         print("*************")
-#         print(ex)
-#         print("*************")
-#         return Response(
-#             response=json.dumps(
-#                 {"message": "data user cannot be deleted", }
-#             ),
-#             status=500,
-#             mimetype="application/json",
-#         )
-
-#########
-
-
-# @app.route('/send-auth', methods=["POST"])
-# def send_auth():
-    # try:
-    #     form = request.form
-    #     receipents_email = form.get("email_user")
-    #     set_message = Message(
-    #         "Authentication Key", sender='noreply@demo.com', recipients=os.getenv("MAIL_USERNAME"))
-    #     set_message.body = "Hello! is everything fine?"
-    #     mail.send(set_message)
-    #     return Response(
-    #         response=json.dumps({"message": "Auth Key has Sent to ", }),
-    #         status=200,
-    #         mimetype="application/json",
-    #     )
-
-    # except Exception as ex:
-    #     print("*************")
-    #     print(ex)
-    #     print("*************")
-    #     return Response(
-    #         response=json.dumps(
-    #             {"message": "Error, cannot send API authentication", }
-    #         ),
-    #         status=500,
-    #         mimetype="application/json",
-    #     )
-
-
-if __name__ == "__main__":
+if __name__ == "project":
     app.run(port=80, debug=True)
