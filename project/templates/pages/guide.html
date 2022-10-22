@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% block content %}
-<section class="guide-wrapper">
+<section class="guide-wrapper mt-5">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div class="row" style="margin-top: 130px">
+    <div class="row" style="margin-top: 70px">
       <div class="col-12 text-wrapper">
         <h1 class="p-2">
           <strong>Guide</strong>
@@ -41,9 +41,45 @@
           </div>
         {% endfor %}
 
-        {{ data_url }}
+      
+      </div>
+    </div>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table" width="100%">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">API</th>
+              <th scope="col">Method</th>
+              <th scope="col">Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>{{ data_url }}</td>
+              <td>POST</td>
+              <td>
+                {
+                  <br/>
+                  '_id': '63500ef630c95bd1f8d288ff', 
+                  <br/>
+                  inputText: 'Those Aussie made their choice to join ISIS and commit terrorist attack on innocent civilians for a religion and political ideology. Quran 2:191-193 https://quran.com/2/191-193 Why should we risk the safety of Australian living in Australia for those terrorist.',
+                  <br/>
+                  'resultPrediction': 'Religion', 
+                  <br/>
+                  'date': '2022-10-10 21:25:59.939416', 
+                  <br/>
+                  }
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </section>
 {% endblock %}
+
+

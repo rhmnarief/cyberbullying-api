@@ -27,7 +27,7 @@ h2{
 .btn-gradient{
     background: linear-gradient(90deg, #8E29B3 -2.32%, #B3791D 118.11%);
     padding: 6px 12px;
-    color: white;
+    color: white !important;
     font-weight: bold;
     text-decoration: none !important;
 }

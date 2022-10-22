@@ -1,25 +1,10 @@
-"""
-    Example Controllers
-"""
-
-from project.algorithm import MachineModel
 from project import app
-from project.config import Database
 
 from flask import Response, request, render_template, redirect, url_for, jsonify
 from werkzeug.exceptions import HTTPException
-from bson.objectid import ObjectId
-from datetime import datetime
 
-
-import pandas as pd
 import json
 import requests
-from dotenv import load_dotenv
-
-load_dotenv()
-
-db = Database.db
 
 
 @app.errorhandler(HTTPException)
@@ -95,77 +80,6 @@ def guide():
         print(ex)
         return Response(
             response=json.dumps({"message": "guide error", "error": f"{ex}"}),
-            status=500,
-            mimetype="application/json",
-        )
-
-
-# Model Section
-@app.route("/predict", methods=["POST", "GET"])
-def predict():
-    if request.method == "POST":
-        try:
-            form = request.form
-            input_prediction = form.get("input_prediction")
-            cleaned_text = MachineModel.clean_text(input_prediction)
-            series_text = pd.Series(cleaned_text)
-            preprocessed_text = series_text.apply(
-                MachineModel.preprocess_tweet)
-            vectorized_text = MachineModel.TFIDFVector.transform(preprocessed_text.astype("U"))
-            result_test = MachineModel.model.predict(vectorized_text)
-            final_result = MachineModel.difine_result(result_test)
-            return render_template("/pages/detection.html", result=final_result, input=input_prediction)
-        except Exception as ex:
-            print(ex)
-            return Response(
-                response=json.dumps({"message": "Method Post Predict Failed"}),
-                status=500,
-                mimetype="application/json",
-            )
-    if request.method == "GET":
-        return redirect("/")
-
-# Model API
-
-
-@app.route("/predict_cyberbullying/", methods=["POST"])
-def check_cyberbullying():
-    try:
-        form = request.form
-        input_prediction = form.get("input_prediction")
-        cleaned_text = MachineModel.clean_text(input_prediction)
-        series_text = pd.Series(cleaned_text)
-        preprocessed_text = series_text.apply(MachineModel.preprocess_tweet)
-        vectorized_text = MachineModel.TFIDFVector.transform(preprocessed_text.astype("U"))
-        result_test = MachineModel.model.predict(vectorized_text)
-        final_result = MachineModel.difine_result(result_test)
-        timestamp = datetime.now()
-
-        prediction = {
-            "inputText": input_prediction,
-            "resultPrediction": final_result,
-            "date": f"{timestamp}",
-        }
-        dbResponse = db.predict_result.insert_one(prediction)
-
-        return Response(
-            response=json.dumps(
-                {
-                    "id": f"{dbResponse.inserted_id}",
-                    "message": "Input Succesfully Predicted!",
-                    "inputText": input_prediction,
-                    "resultPrediction":  final_result,
-                    "date": f"{timestamp}",
-                }
-            ),
-            status=200,
-            mimetype="application/json",
-        )
-
-    except Exception as ex:
-        print(ex)
-        return Response(
-            response=json.dumps({"message": "Method Post Predict Failed"}),
             status=500,
             mimetype="application/json",
         )
