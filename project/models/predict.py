@@ -21,16 +21,16 @@ class Predict(object):
             "updated": "datetime",
         }
 
-        self.create_required_fields = ["input_text ","input_prediction"]
+        self.create_required_fields = ["input_text","result_prediction"]
 
         # Fields optional for CREATE
-        self.create_optional_fields = ["input_text ","input_prediction"]
+        self.create_optional_fields = ["input_text ","result_prediction"]
 
         # Fields required for UPDATE
-        self.update_required_fields = ["input_text ","input_prediction"]
+        self.update_required_fields = ["input_text ","result_prediction"]
 
         # Fields optional for UPDATE
-        self.update_optional_fields = ["input_text ","input_prediction"]
+        self.update_optional_fields = ["input_text ","result_prediction"]
 
     def classify(self, input_text):
         cleaned_text = self.machine_model.clean_text(input_text)
@@ -43,11 +43,12 @@ class Predict(object):
         
     def create(self, predict):
         # Validator will throw error if invalid
+        print(predict)
         validated = self.validator.validateTypes(predict, self.fields)
         if validated:
             err = self.validator.validate(predict, self.fields, self.create_required_fields, self.create_optional_fields)
             if err is None:
-                res = self.db.insert(predict, self.fields)
+                res = self.db.insert(predict, self.collection_name)
                 return ResponseMessage(res, "Data validated").send()
             else:
                 return ResponseMessage(err, "Data required is missing").send()

@@ -32,7 +32,7 @@ class Validator(object):
 
 
         if len(required_fields - element_fields) > 0:
-            raise ValueError("Required field missing")
+            raise ValueError("Required field missing", len(required_fields - element_fields))
 
         if len(element_fields - (required_fields | optional_fields)) > 0:
-            raise ValueError("Invalid field in element")
+            raise ValueError("Invalid field in element", len(element_fields - (required_fields)))

@@ -1,4 +1,5 @@
 
+from asyncio.windows_events import NULL
 from project import app
 from flask import Response, request, render_template, redirect, url_for, jsonify
 
@@ -30,45 +31,41 @@ def send_predict():
 
 # Model API
 
+@app.route("/predict_cyberbullying/", methods=["POST"])
+def check_cyberbullying():
+    if request.method == "POST":
+        try:
+            if request.form:
+                input_text = request.form["input_text"]
 
-# @app.route("/predict_cyberbullying/", methods=["POST"])
-# def check_cyberbullying():
-#     try:
-#         form = request.form
-#         input_prediction = form.get("input_prediction")
-#         cleaned_text = MachineModel.clean_text(input_prediction)
-#         series_text = pd.Series(cleaned_text)
-#         preprocessed_text = series_text.apply(MachineModel.preprocess_tweet)
-#         vectorized_text = MachineModel.TFIDFVector.transform(preprocessed_text.astype("U"))
-#         result_test = MachineModel.model.predict(vectorized_text)
-#         final_result = MachineModel.difine_result(result_test)
-#         timestamp = datetime.now()
+                if input_text == "" or input_text == NULL:
+                    return Response(
+                        response=json.dumps({"message": "Input cannot be empty"}),
+                        status=400,
+                        mimetype="application/json",
+                    )
 
-#         prediction = {
-#             "inputText": input_prediction,
-#             "resultPrediction": final_result,
-#             "date": f"{timestamp}",
-#         }
-#         dbResponse = db.predict_result.insert_one(prediction)
+                result_prediction = model_predict.classify(input_text)
+                result_sent = model_predict.create({"input_text":input_text, "result_prediction":result_prediction})
+                return Response(
+                            response=json.dumps({"message": "success send predict data", 
+                            "type_cyberbullying" :result_prediction , 
+                            "input_text" :input_text,
+                            "status" :result_sent  }),
+                            status=200,
+                            mimetype="application/json",
+                )
+                
+        except Exception as ex:
+            return Response(
+                response=json.dumps({"message": f"{ex}", "Type" : "error"}),
+                status=500,
+                mimetype="application/json",
+            )
 
-#         return Response(
-#             response=json.dumps(
-#                 {
-#                     "id": f"{dbResponse.inserted_id}",
-#                     "message": "Input Succesfully Predicted!",
-#                     "inputText": input_prediction,
-#                     "resultPrediction":  final_result,
-#                     "date": f"{timestamp}",
-#                 }
-#             ),
-#             status=200,
-#             mimetype="application/json",
-#         )
-
-#     except Exception as ex:
-#         print(ex)
-#         return Response(
-#             response=json.dumps({"message": "Method Post Predict Failed"}),
-#             status=500,
-#             mimetype="application/json",
-#         )
+    if request.method == "GET":
+        return Response(
+                response=json.dumps({"message": "Bad Request"}),
+                status=400,
+                mimetype="application/json",
+            )
