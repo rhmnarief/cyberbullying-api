@@ -1,5 +1,6 @@
+from asyncio.windows_events import NULL
 from project import app
-from flask import Response, request, render_template, redirect, url_for, jsonify
+from flask import Response, request, render_template, redirect, url_for, jsonify, flash
 
 from werkzeug.exceptions import HTTPException
 import json
@@ -60,23 +61,30 @@ def add_comment():
                     email= request.form["email"]
                     comment= request.form["comment"]
                     rate = request.form.get('rate', type=int)
+                    
+                    if request.form["fullname"] == "" or request.form["email"] == "" or request.form["comment"] == "" or request.form["rate"] == NULL:
+                        response_endpoint = Response(
+                                response=json.dumps({"message": "Form input must be filled"}),
+                                    status=400,
+                                    mimetype="application/json",
+                            )
+                        flash('Form Not Fullfill||Form input must be filled!', 'warning')
+                        return redirect(url_for('homepage', message = response_endpoint))
+
                     result_sent = model_comment.create({'fullname': fullname, 'email': email, 'comment': comment, 'rate':rate})
                     response_endpoint = Response(
                         response=json.dumps({"message": "success send comment data", "response" :result_sent }),
                             status=200,
                             mimetype="application/json",
                     )
+                    flash('Your comment has been sent||Success Sent Comment!', 'success')
                     return redirect(url_for('homepage'))
 
-
-                response_endpoint = Response(
-                        response=json.dumps({"message": "Form input must be filled"}),
-                            status=400,
-                            mimetype="application/json",
-                    )
-                return redirect(url_for('homepage', message = response_endpoint))
+               
             
     except Exception as ex:
+                flash(f"{ex}", 'error')
+                return redirect(url_for('homepage'))
                 return Response(
                     response=json.dumps(
                         {"message": "cannot send comment data", "error": f"{ex}"}),
