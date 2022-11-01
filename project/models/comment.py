@@ -46,8 +46,12 @@ class Comment(object):
         else:
             return ResponseMessage(validated, "Data type is missing").send()
 
-    def find(self, comment):  # find all
-        return self.db.find(comment, self.collection_name)
+    def find(self, comment, sortValue, ascending, limitValue):  # find all
+        return self.db.find(comment, self.collection_name, sortValue=sortValue, ascending=ascending, limitValue=limitValue)
+
+    def count(self):
+        return self.db.count(self.collection_name)
+
 
     def find_by_id(self, id):
         return self.db.find_by_id(id, self.collection_name)

@@ -1,14 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">
-    <img src="{{url_for('static', filename = 'assets/logo.png')}}" alt="logo" />
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img src="{{url_for('static', filename = 'assets/logo.png')}}" alt="logo" />
     NLP-API
-  </a>
-  <div class="form-inline ml-auto">
-    <a
-      href='/guide'
-      >How To Use API</a>
-  </div>
-  <div class="form-inline ml-auto">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+          href='/guide'
+          class="btn btn-gradient my-2 my-sm-0"
+          >How To Use API</a>
+        </li>
+      </ul>
+    </div>
     <a
       href='mailto:rhmnarief7@gmail.com?">Click'
       data-link-type="articleContentLink"

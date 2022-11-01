@@ -1,6 +1,6 @@
 from project import app
 
-from flask import Response, request, render_template, redirect, url_for, jsonify
+from flask import Response, flash, request, render_template, redirect, url_for, jsonify
 from werkzeug.exceptions import HTTPException
 
 import json
@@ -31,24 +31,26 @@ def page_not_found(e):
 @app.route('/', methods=['GET'])
 def homepage():
     try:
-        url = request.host_url + "comment"
-        get_comment = requests.get(url)
-        response_json = get_comment.json()
+        # Hit Endpoint [GET] COMMENT
+        url_get_comment = request.host_url + "comment"
+        hit_get_comment = requests.get(url_get_comment)
+        response_get_comment = hit_get_comment.json()
+
         return render_template(
             '/pages/home.html',
-            data_comment=response_json
+            data_comment=response_get_comment,
         )
     except Exception as ex:
-        print(ex)
         return Response(
-            response=json.dumps({"message": "cannot read comment"}),
+            response=json.dumps({"message": "cannot read comment", 'error' : f"{ex}"}),
             status=500,
             mimetype="application/json",
         )
+        
 
 #########
 
-
+    
 @app.route("/guide")
 def guide():
     try:
@@ -85,6 +87,11 @@ def guide():
         )
 
 
+@app.route('/notification', methods=['GET', 'POST'])
+def notification():
+    if request.method == "GET":    
+        return render_template('test.html')
+    if request.method == "POST":
+        flash('Your comment has been sent', 'success')
+        return redirect(url_for('homepage'))
 
-if __name__ == "project":
-    app.run(port=80, debug=True)
