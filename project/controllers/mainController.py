@@ -92,6 +92,6 @@ def notification():
     if request.method == "GET":    
         return render_template('test.html')
     if request.method == "POST":
-        flash('Your comment has been sent', 'success')
+        flash('Your comment has been sent||Sugestion', 'success')
         return redirect(url_for('homepage'))
 
