@@ -20,13 +20,13 @@ class Database(object):
         inserted = self.db[collection_name].insert_one(element)  # insert data to db
         return str(inserted.inserted_id)
 
-    def find(self, criteria, collection_name, projection=None, sort=None, limit=0, cursor=False, sortValue=None, ascending=None, limitValue=None):  # find all from db
+    def find(self, criteria, collection_name, projection=None, sort=None, limit=0, cursor=False, sortValue=None, skipValue= None, limitValue=None):  # find all from db
      
         if "_id" in criteria:
             criteria["_id"] = ObjectId(criteria["_id"])
 
 
-        found = self.db[collection_name].find(filter=criteria, projection=projection, limit=limit, sort=sort).sort(sortValue, ascending).limit(limitValue)
+        found = self.db[collection_name].find(filter=criteria, projection=projection, limit=limit, sort=sort).sort(sortValue[0], sortValue[1]).skip(skipValue).limit(limitValue)
 
         if cursor:
             return found

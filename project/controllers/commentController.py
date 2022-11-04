@@ -2,8 +2,14 @@ from asyncio.windows_events import NULL
 from project import app
 from flask import Response, request, render_template, redirect, url_for, jsonify, flash
 
+
 from werkzeug.exceptions import HTTPException
+from pymongo import MongoClient
+from flask_paginate import Pagination, get_page_parameter, get_page_args
+
 import json
+
+import math
 
 from project.models import comment
 
@@ -13,9 +19,10 @@ model_comment = comment.Comment()
 @app.route('/count-comment', methods=['GET'])
 def count_data():
     try:
-        counted = model_comment.count()
+        total = model_comment.count()
+
         response_endpoint = Response(
-                        response=json.dumps({"message": "succes get data", 'total_data' : counted}),
+                        response=json.dumps({"message": "succes get data", 'total_data' : total}),
                             status=200,
                             mimetype="application/json",
                     )
@@ -33,13 +40,40 @@ def count_data():
         )
 
 
+
 @app.route('/comment', methods=['GET'])
 def get_comment():
     try:
-        sorted = "rate"
-        ascending = -1
-        limit = 5
-        return jsonify(model_comment.find({}, sorted, ascending, limit))
+        args = request.args
+        skip = args.get("skip", default=0, type=int)
+        limit = args.get("limit", default=5, type=int) 
+
+        sorted = ["rate", -1]
+
+        total = model_comment.count()
+        total_page = total - skip 
+        next_skip = skip + limit
+        prev_skip = skip - limit
+
+        next_url = '/?skip=' + str(next_skip) + '&limit=' + str(limit)
+        prev_url = '/?skip=' + str(prev_skip) + '&limit=' + str(limit)  
+
+        if prev_skip < 0 :
+            prev_url = None
+            prev_skip = 0
+
+        if total_page < limit:
+            next_url = None
+       
+        response_get_comment= jsonify({
+                        'data' : model_comment.find({}, sorted, skip, limit), 
+                        'next_url' :next_url, 
+                        'previous_url' :prev_url,
+                        'total_data': total_page
+                        })
+
+        return response_get_comment
+
     except Exception as ex:
         return Response(
             response=json.dumps(
@@ -68,6 +102,7 @@ def add_comment():
                                     status=400,
                                     mimetype="application/json",
                             )
+
                         flash('Form Not Fullfill||Form input must be filled!', 'warning')
                         return redirect(url_for('homepage', message = response_endpoint))
 
@@ -83,12 +118,12 @@ def add_comment():
                
             
     except Exception as ex:
-                flash(f"{ex}", 'error')
-                return redirect(url_for('homepage'))
-                return Response(
+                json_response = Response(
                     response=json.dumps(
                         {"message": "cannot send comment data", "error": f"{ex}"}),
                     status=500,
                     mimetype="application/json",
                 )
+                flash(f"{ex}", 'error')
+                return redirect(url_for('homepage'))
 

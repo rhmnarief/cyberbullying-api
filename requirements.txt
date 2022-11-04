@@ -12,3 +12,4 @@ Flask-Mail
 pymongo
 flask_cors
 dnspython
+flask-paginate

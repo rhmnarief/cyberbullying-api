@@ -32,7 +32,11 @@ def page_not_found(e):
 def homepage():
     try:
         # Hit Endpoint [GET] COMMENT
-        url_get_comment = request.host_url + "comment"
+        args = request.args
+        skip = args.get("skip", default=0, type=int)
+        limit = args.get("limit", default=5, type=int) 
+
+        url_get_comment = request.host_url +  '/comment?skip=' + str(skip) + '&limit=' + str(limit)
         hit_get_comment = requests.get(url_get_comment)
         response_get_comment = hit_get_comment.json()
 
