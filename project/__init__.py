@@ -6,7 +6,9 @@ app = Flask("project")
 CORS(app)
 
 
-from project.controllers import *
+from project.controllers import commentController
+from project.controllers import predictController
+from project.controllers import mainController
 # from project.algorithm import *
 # from project.controllers import predictController
 

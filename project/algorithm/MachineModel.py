@@ -2,7 +2,6 @@ import re
 import pickle
 from nltk.stem.snowball import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
-from nltk import word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer
 from wordcloud import WordCloud, STOPWORDS
 import emoji

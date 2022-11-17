@@ -6,5 +6,5 @@ __email__ = "rhmnarief8@gmail.com"
 
 from project import app
 
-if __name__ == '__main__':
+if __name__ == 'project':
     app.run(host="localhost", port=8000, debug=True)
