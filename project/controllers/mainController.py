@@ -65,7 +65,7 @@ def guide():
             },
             {
                 "title": "Read Documentation",
-                "description": " We are providing all the information required to in the documentation for how to get your key, how to send requests, and which resources you can fetch from its server.",
+                "description": " We are providing all the information required to in the documentation for how to get your key, how to send requests, and which resources you can fetch from its server. You can check it in https://documenter.getpostman.com/view/16520004/2s8YzP1Pg6",
             },
             {
                 "title": "Write a request to an endpoint",

@@ -1,6 +1,6 @@
-from asyncio.windows_events import NULL
 from project import app
 from flask import Response, request, render_template, redirect, url_for, jsonify, flash
+import requests
 
 
 from werkzeug.exceptions import HTTPException
@@ -86,6 +86,31 @@ def get_comment():
                     mimetype="application/json",
         )
 
+@app.route('/check-email', methods=['POST'])
+def email_check():
+    try:
+        url = "https://api.reacher.email/v0/check_email"
+        email = request.form["email"]
+        headers = {"content-type": "application/json", 'authorization': 'a63be4aa-a6fd-11ed-bedf-f73f2d8f00b6'}
+        payload = {"to_email": email}
+        request_email = requests.post(url, json=payload, headers=headers)
+        data = request_email.json()
+        print(data)
+        if data['is_reachable'] == "safe":
+             return 'true'
+        else:
+             return 'false'
+        
+
+    except Exception as ex:
+        json_response = Response(
+        response=json.dumps( {"message": "cannot send comment data", "error": f"{ex}"}),
+                    status=500,
+                    mimetype="application/json",
+                )
+        return json_response
+     
+
 @app.route('/comment', methods=['POST'])
 def add_comment():
     try:
@@ -105,18 +130,31 @@ def add_comment():
 
                         flash('Form Not Fullfill||Form input must be filled!', 'warning')
                         return redirect(url_for('homepage', message = response_endpoint))
+                    
+                    url = "https://api.reacher.email/v0/check_email"
+                    email = request.form["email"]
+                    headers = {"content-type": "application/json", 'authorization': 'a63be4aa-a6fd-11ed-bedf-f73f2d8f00b6'}
+                    payload = {"to_email": email}
+                    request_email = requests.post(url, json=payload, headers=headers)
+                    data = request_email.json()
 
-                    result_sent = model_comment.create({'fullname': fullname, 'email': email, 'comment': comment, 'rate':rate})
-                    response_endpoint = Response(
-                        response=json.dumps({"message": "success send comment data", "response" :result_sent }),
-                            status=200,
-                            mimetype="application/json",
-                    )
-                    flash('Your comment has been sent||Success Sent Comment!', 'success')
-                    return redirect(url_for('homepage'))
+                    if data['syntax']['is_valid_syntax']:
+                          if data['is_reachable'] == "safe":
+                                result_sent = model_comment.create({'fullname': fullname, 'email': email, 'comment': comment, 'rate':rate})
+                                response_endpoint = Response(
+                                    response=json.dumps({"message": "success send comment data", "response" :result_sent }),
+                                        status=200,
+                                        mimetype="application/json",
+                                )
+                                flash('Your comment has been sent||Success Sent Comment!', 'success')
+                                return redirect(url_for('homepage'))
+                          else:
+                                flash('Your Email Is Not Verified||Failed Sent Comment!', 'warning')
+                                return redirect(url_for('homepage'))
+                    else:
+                        flash('Your Input Email Syntax Is Not Corrected||Failed Sent Comment!', 'warning')
+                        return redirect(url_for('homepage'))
 
-               
-            
     except Exception as ex:
                 json_response = Response(
                     response=json.dumps(

@@ -1,5 +1,3 @@
-
-from asyncio.windows_events import NULL
 from project import app
 from flask import Response, request, render_template, redirect, url_for, jsonify
 
@@ -31,23 +29,25 @@ def send_predict():
 
 # Model API
 
-@app.route("/predict_cyberbullying/", methods=["POST"])
+@app.route("/predict_cyberbullying", methods=["POST"])
 def check_cyberbullying():
     if request.method == "POST":
         try:
             if request.form:
-                input_text = request.form["input_text"]
+                input_text = request.form["input_text"] 
+            else:
+                input_text = request.json['input_text']
 
-                if input_text == "" or input_text == NULL:
-                    return Response(
+            if input_text == "" or input_text is None:
+                return Response(
                         response=json.dumps({"message": "Input cannot be empty"}),
                         status=400,
                         mimetype="application/json",
                     )
 
-                result_prediction = model_predict.classify(input_text)
-                result_sent = model_predict.create({"input_text":input_text, "result_prediction":result_prediction})
-                return Response(
+            result_prediction = model_predict.classify(input_text)
+            result_sent = model_predict.create({"input_text":input_text, "result_prediction":result_prediction})
+            return Response(
                             response=json.dumps({"message": "success send predict data", 
                             "type_cyberbullying" :result_prediction , 
                             "input_text" :input_text,

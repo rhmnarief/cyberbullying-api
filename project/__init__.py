@@ -14,4 +14,4 @@ from project.controllers import mainController
 
 if __name__ == "project":
     app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-    app.run(port=80, debug=True)
+    app.run(host="0.0.0.0",port=3001, debug=True)
